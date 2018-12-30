@@ -1,33 +1,42 @@
 import axios from 'axios';
-import { FETCH_USER, FETCH_BLOGS, FETCH_BLOG } from './types';
+import { FETCH_TORRE_BIO, FETCH_LINKEDIN_PROFILE, SHOW_LINKEDIN_BUTTON } from './types';
 
-export const fetchUser = () => async dispatch => {
-  const res = await axios.get('/api/current_user');
+export const fetchTorreBio = (id, callback) => async dispatch => {
 
-  dispatch({ type: FETCH_USER, payload: res.data });
+  try {
+    const res = await axios.get(`/api/torre/${id}`);
+    dispatch({ type: FETCH_TORRE_BIO, payload: res.data });
+    callback(null);
+
+  } catch (error) {
+    callback(error);
+  }
 };
 
-export const handleToken = token => async dispatch => {
-  const res = await axios.post('/api/stripe', token);
+export const fetchLinkedinProfile = (key, callback) => async dispatch => {
 
-  dispatch({ type: FETCH_USER, payload: res.data });
+  try {
+    const res = await axios.get(`/api/linkedin/${key}`);
+    dispatch({ type: FETCH_LINKEDIN_PROFILE, payload: res.data });
+    callback(null);
+
+  } catch (error) {
+    callback(error);
+  }
 };
 
-export const submitBlog = (values, history) => async dispatch => {
-  const res = await axios.post('/api/blogs', values);
+export const showLinkedinButton = (show) => {
+  return {
+    type: SHOW_LINKEDIN_BUTTON,
+    payload: show
+  }
+}
 
-  history.push('/blogs');
-  dispatch({ type: FETCH_BLOG, payload: res.data });
-};
-
-export const fetchBlogs = () => async dispatch => {
-  const res = await axios.get('/api/blogs');
-
-  dispatch({ type: FETCH_BLOGS, payload: res.data });
-};
-
-export const fetchBlog = id => async dispatch => {
-  const res = await axios.get(`/api/blogs/${id}`);
-
-  dispatch({ type: FETCH_BLOG, payload: res.data });
-};
+export const fetchLinkedinLink = (callback) => async dispatch =>{
+  try {
+    const response = await axios.get('/auth/linkedin/link');
+    callback(null, response.data);
+  } catch (error) {
+    callback(error);
+  }
+}

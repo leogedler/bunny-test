@@ -1,0 +1,11 @@
+.education-duration{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+}
+
+.education-title{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}

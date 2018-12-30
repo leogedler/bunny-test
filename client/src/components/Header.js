@@ -2,26 +2,35 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Link } from 'react-router-dom';
 
+import * as actions from '../actions';
+
 class Header extends Component {
+
+  state = {
+    link: ''
+  };
+
+  componentDidMount() {
+    const { fetchLinkedinLink } = this.props;
+
+    fetchLinkedinLink((error, data) => {
+      if (!error) {
+        this.setState({ link: data.link })
+      }
+    })
+
+  }
+
   renderContent() {
-    switch (this.props.auth) {
-      case null:
-        return;
-      case false:
-        return (
-          <li>
-            <a href={'/auth/google'}>Login With Google</a>
-          </li>
-        );
-      default:
-        return [
-          <li key="3" style={{ margin: '0 10px' }}>
-            <Link to="/blogs">My Blogs</Link>
-          </li>,
-          <li key="2">
-            <a href={'/auth/logout'}>Logout</a>
-          </li>
-        ];
+    const { showLinkedin } = this.props;
+    const { link } = this.state;
+
+    if (showLinkedin) {
+      return (
+        <li>
+          <a href={link}>Merge LinkedIn Profile</a>
+        </li>
+      );
     }
   }
 
@@ -34,7 +43,7 @@ class Header extends Component {
             className="left brand-logo"
             style={{ marginLeft: '10px' }}
           >
-            Blogster
+            Pro-Profile
           </Link>
           <ul className="right">{this.renderContent()}</ul>
         </div>
@@ -43,8 +52,6 @@ class Header extends Component {
   }
 }
 
-function mapStateToProps({ auth }) {
-  return { auth };
-}
+const mapStateToProps = ({ profile }) => ({ showLinkedin: profile.showLinkedinButton });
 
-export default connect(mapStateToProps)(Header);
+export default connect(mapStateToProps, actions)(Header);

@@ -1,3 +1,3 @@
-export const FETCH_USER = 'fetch_user';
-export const FETCH_BLOGS = 'fetch_blogs';
-export const FETCH_BLOG = 'fetch_blog';
+export const FETCH_TORRE_BIO = 'fetch_torre_bio';
+export const FETCH_LINKEDIN_PROFILE = 'fetch_linkedin_profile';
+export const SHOW_LINKEDIN_BUTTON = 'show_linkedin_button';
